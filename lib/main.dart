@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
       title: 'Login App',
       theme: ThemeData(   
         //? Define el color principal de toda la aplicación (un azul bonito).
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 6, 133, 251)),
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 11, 46, 80)),
         useMaterial3: true,  //? Activa el estilo moderno de diseño de Google.
       ),
       home: const LoginPage(), //? Ordena: "Muestra la pantalla de Login primero".
