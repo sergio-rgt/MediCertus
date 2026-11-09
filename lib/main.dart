@@ -93,7 +93,7 @@ class _LoginPageState extends State<LoginPage> {
 
                   // Título de bienvenida.
                   Text(
-                    '¡Bienvenido!',
+                    'Bienvenido',
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                           fontWeight: FontWeight.bold,
