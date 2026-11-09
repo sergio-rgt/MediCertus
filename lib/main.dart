@@ -1,35 +1,32 @@
-//? Importamos la librería principal de Google para usar los bloques de diseño (Material Design).
-import 'package:flutter/material.dart';
 
-//? Importamos el archivo externo donde está la otra pantalla (HomeScreen).
-import 'HomeScreen.dart'; 
+import 'package:flutter/material.dart'; // Importa los componentes visuales de Flutter.
+import 'HomeScreen.dart'; // Importa la pantalla principal después del login.
 
-//? [main] Es la puerta de entrada de la aplicación. Aquí arranca todo.
+// Punto de entrada de la aplicación.
 void main() {
   runApp(const MyApp());
 }
 
-//? [MyApp] Es el plano general de tu casa. Configura el tema, los colores y la pantalla principal.
+// Configuración general de la aplicación.
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,  //? Quita la banderita roja fea de "DEBUG" de la esquina.
+      debugShowCheckedModeBanner: false, // Oculta la etiqueta de depuración.
       title: 'Login App',
-      theme: ThemeData(   
-        //? Define el color principal de toda la aplicación (un azul bonito).
+      theme: ThemeData(
+        // Define el color principal y el estilo visual.
         colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 2, 28, 54)),
-        useMaterial3: true,  //? Activa el estilo moderno de diseño de Google.
+        useMaterial3: true, // Activa el diseño Material 3.
       ),
-      home: const LoginPage(), //? Ordena: "Muestra la pantalla de Login primero".
+      home: const LoginPage(), // Establece la pantalla inicial.
     );
   }
 }
 
-//! [LoginPage] Pantalla con estado ("Stateful"). 
-//! Se usa Stateful porque esta pantalla "recuerda cosas" que cambian (como ver/ocultar la contraseña).
+// Pantalla de inicio de sesión con estado modificable.
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -38,32 +35,30 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  
-  //? [_formKey] Es como un supervisor general. Revisa que todos los campos cumplan las reglas antes de avanzar.
+
+  // Clave utilizada para controlar las validaciones del formulario.
   final _formKey = GlobalKey<FormState>();
 
-  //? [_emailController] y [_passwordController] Son los asistentes que leen lo que el usuario escribe en los inputs.
+  // Controladores para obtener el correo y la contraseña ingresados.
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  //? [_isPasswordObscured] Interruptor para saber si la contraseña está oculta (true) o visible (false).
+  // Controla si la contraseña se muestra oculta o visible.
   bool _isPasswordObscured = true;
 
   @override
   void dispose() {
-    //! Muy importante: Borramos a los asistentes de la memoria cuando cerramos la pantalla para no saturar el celular.
+    // Libera los recursos de los controladores al cerrar la pantalla.
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
 
-  //? Función que se ejecuta cuando el usuario hace clic en "Iniciar Sesión".
+  // Valida los campos y permite acceder a la siguiente pantalla.
   void _handleLogin() {
-    //? Si el supervisor (_formKey) revisa y dice que todo está bien escrito...
     if (_formKey.currentState!.validate()) {
-      
-      //! [Navigator.push] Es como abrir una puerta y viajar a otra pantalla (HomeScreen).
-      //! Le pasamos como "regalo" el correo que escribió el usuario (_emailController.text).
+
+      // Navega a HomeScreen y envía el correo ingresado.
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -75,28 +70,28 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    //? [Scaffold] Es el lienzo en blanco o estructura base de la pantalla.
+    // Estructura principal de la pantalla.
     return Scaffold(
-      body: SafeArea( //? Evita que el contenido choque con la cámara o bordes del celular.
-        child: Center( //? Centra todo en la pantalla.
-          child: SingleChildScrollView( //? Permite deslizar hacia abajo si sale el teclado virtual para que no dé error.
-            padding: const EdgeInsets.all(24.0), //? Margen o espacio alrededor de todo.
-            child: Form( //? Contenedor especial para manejar formularios y validaciones.
-              key: _formKey, //? Conectamos el formulario con nuestro supervisor.
-              child: Column( //? Columna: Organiza los elementos de arriba hacia abajo (en fila vertical).
+      body: SafeArea( // Evita que el contenido se superponga con los bordes del dispositivo.
+        child: Center( // Centra el contenido.
+          child: SingleChildScrollView( // Permite desplazar el formulario cuando aparece el teclado.
+            padding: const EdgeInsets.all(24.0), // Establece el margen interno.
+            child: Form( // Agrupa los campos y sus validaciones.
+              key: _formKey,
+              child: Column( // Organiza los elementos verticalmente.
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  
-                  //? 1. Ícono o Logo de la clínica en la parte superior.
+
+                  // Ícono representativo de la aplicación.
                   const Icon(
                     Icons.local_hospital,
                     size: 200,
                     color: Color.fromARGB(255, 6, 133, 251),
                   ),
-                  const SizedBox(height: 16), //? Espacio vacío vertical de separación.
-                  
-                  //? 2. Título de bienvenida.
+                  const SizedBox(height: 16), // Espacio entre elementos.
+
+                  // Título de bienvenida.
                   Text(
                     '¡Bienvenido!',
                     textAlign: TextAlign.center,
@@ -105,8 +100,8 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                   ),
                   const SizedBox(height: 8),
-                  
-                  //? Subtítulo aclaratorio.
+
+                  // Texto descriptivo del inicio de sesión.
                   Text(
                     'Ingresa tus credenciales para continuar',
                     textAlign: TextAlign.center,
@@ -116,77 +111,84 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   const SizedBox(height: 32),
 
-                  //? 3. CAMPO DE CORREO ELECTRÓNICO (TextFormField).
+                  // Campo para ingresar el correo electrónico.
                   TextFormField(
-                    controller: _emailController, //? Conectamos al asistente para leer el texto.
-                    keyboardType: TextInputType.emailAddress, //? Cambia el teclado del celular para poner el símbolo '@' fácil.
+                    controller: _emailController, // Vincula el campo con su controlador.
+                    keyboardType: TextInputType.emailAddress, // Muestra un teclado para correos.
                     decoration: InputDecoration(
                       labelText: 'Correo electrónico',
-                      prefixIcon: const Icon(Icons.email_outlined), //? Icono al inicio de la cajita.
+                      prefixIcon: const Icon(Icons.email_outlined), // Ícono al inicio del campo.
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12), //? Bordes redondeados modernos.
+                        borderRadius: BorderRadius.circular(12), // Redondea los bordes.
                       ),
                     ),
                     validator: (value) {
-                      //? Reglas de validación del correo:
+                      // Comprueba que el correo no esté vacío.
                       if (value == null || value.isEmpty) {
-                        return 'Por favor ingresa tu correo'; //? Error si está vacío.
+                        return 'Por favor ingresa tu correo';
                       }
+
+                      // Comprueba que el correo contenga una arroba.
                       if (!value.contains('@')) {
-                        return 'Ingresa un correo válido'; //? Error si le falta la arroba.
+                        return 'Ingresa un correo válido';
                       }
-                      return null; //? Si todo está bien, retorna null (sin errores).
+
+                      return null; // No se encontraron errores.
                     },
                   ),
                   const SizedBox(height: 16),
 
-                  //? 4. CAMPO DE CONTRASEÑA.
+                  // Campo para ingresar la contraseña.
                   TextFormField(
-                    controller: _passwordController, //? Conectamos al asistente de la contraseña.
-                    obscureText: _isPasswordObscured, //? Oculta los caracteres con puntitos (•) si está en true.
+                    controller: _passwordController, // Vincula el campo con su controlador.
+                    obscureText: _isPasswordObscured, // Oculta o muestra la contraseña.
                     decoration: InputDecoration(
                       labelText: 'Contraseña',
                       prefixIcon: const Icon(Icons.lock_outlined),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      //? Botón interactivo al final de la caja para ver u ocultar la contraseña.
+
+                      // Botón para cambiar la visibilidad de la contraseña.
                       suffixIcon: IconButton(
                         icon: Icon(
                           _isPasswordObscured
-                              ? Icons.visibility_off //? Icono de ojo tachado.
-                              : Icons.visibility,    //? Icono de ojo abierto.
+                              ? Icons.visibility_off // Ícono cuando está oculta.
+                              : Icons.visibility, // Ícono cuando está visible.
                         ),
                         onPressed: () {
-                          //? setState avisa a Flutter que cambió una variable y debe redibujar la pantalla.
+                          // Actualiza la visibilidad de la contraseña.
                           setState(() {
-                            _isPasswordObscured = !_isPasswordObscured; //? Cambia de verdadero a falso y viceversa.
+                            _isPasswordObscured = !_isPasswordObscured;
                           });
                         },
                       ),
                     ),
                     validator: (value) {
-                      //? Reglas de validación de la contraseña:
+                      // Comprueba que la contraseña no esté vacía.
                       if (value == null || value.isEmpty) {
                         return 'Por favor ingresa tu contraseña';
                       }
+
+                      // Comprueba que tenga al menos 6 caracteres.
                       if (value.length < 6) {
                         return 'Debe tener al menos 6 caracteres';
                       }
-                      return null;
+
+                      return null; // No se encontraron errores.
                     },
                   ),
                   const SizedBox(height: 24),
 
-                  //? 5. BOTÓN DE ENTRAR (ElevatedButton).
+                  // Botón para iniciar sesión.
                   ElevatedButton(
-                    onPressed: _handleLogin, //? Llama a la función de validación y navegación al hacer clic.
+                    onPressed: _handleLogin, // Ejecuta la validación y navegación.
                     style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 16), //? Altura del botón.
-                      backgroundColor: const Color.fromARGB(255, 6, 133, 251), //? Color de fondo azul.
-                      foregroundColor: Colors.white, //? Color del texto (blanco).
+                      padding: const EdgeInsets.symmetric(vertical: 16), // Define la altura del botón.
+                      backgroundColor: const Color.fromARGB(255, 6, 133, 251), // Color de fondo.
+                      foregroundColor: Colors.white, // Color del texto.
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12), //? Bordes redondeados iguales a los inputs.
+                        borderRadius: BorderRadius.circular(12), // Redondea los bordes.
                       ),
                     ),
                     child: const Text(
